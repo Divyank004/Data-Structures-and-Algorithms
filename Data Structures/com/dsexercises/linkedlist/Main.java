@@ -10,8 +10,8 @@ public class Main {
         linkedlist.addFirst(20);
         linkedlist.deleteFirst();
 
-        linkedlist.print();
+        // linkedlist.print();
+        // System.out.println(linkedlist.contains(40));
         System.out.println(linkedlist.contains(40));
-        System.out.println(linkedlist.indexOf(40));
     }
 }

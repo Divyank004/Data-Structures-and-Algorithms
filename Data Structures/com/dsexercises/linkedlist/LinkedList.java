@@ -1,6 +1,18 @@
 package com.dsexercises.linkedlist;
 
+import java.util.NoSuchElementException;
+
 public class LinkedList {
+
+    private class Node {
+
+        private int value;
+        private Node next;
+
+        Node(int value) {
+            this.value = value;
+        }
+    }
 
     private Node first;
     private Node last;
@@ -8,16 +20,12 @@ public class LinkedList {
     // addFirst
     public void addFirst(int item) {
 
-        Node firstnode = new Node();
-        firstnode.setValue(item);
+        Node firstnode = new Node(item);
 
-        if (first == null) {
-
-            firstnode.setNext(null);
-            first = firstnode;
-            last = first;
+        if (isEmpty()) {
+            first = last = firstnode;
         } else {
-            firstnode.setNext(first);
+            firstnode.next = first;
             first = firstnode;
         }
 
@@ -25,84 +33,91 @@ public class LinkedList {
 
     // addLast
     public void addLast(int item) {
-
-        Node lastnode = new Node();
-        lastnode.setValue(item);
-        lastnode.setNext(null);
-        if (last == null) {
-            first = lastnode;
-            last = lastnode;
+        Node lastnode = new Node(item);
+        if (isEmpty()) {
+            first = last = lastnode;
         } else {
-            last.setNext(lastnode);
+            last.next = lastnode;
             last = lastnode;
         }
     }
 
     // deleteFirst
     public void deleteFirst() {
-        Node firstnode = first;
-        first = firstnode.getNext();
-        firstnode.setNext(null);
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        if (first == last) {
+            first = last = null;
+            return;
+        }
+
+        Node secondnode = first.next;
+        first.next = null;
+        first = secondnode;
 
     }
 
     // deleteLast
+
     public void deleteLast() {
-        Node temp = first;
-        Node prevlast = new Node();
-        while (temp.getNext() != null) {
-            prevlast = temp;
-            temp = temp.getNext();
+        if (isEmpty()) {
+            throw new NoSuchElementException();
         }
-        last = prevlast;
-        prevlast.setNext(null);
+        if (first == last) {
+            first = last = null;
+            return;
+        }
+        Node previous = getPrevious(last);
+
+        last = previous;
+        last.next = null;
+
+    }
+
+    // previousnode
+    private Node getPrevious(Node node) {
+        Node current = first;
+        while (current != null) {
+            if (current.next == node)
+                return current;
+            current = current.next;
+        }
+        return null;
     }
 
     // print
     public void print() {
-        Node temp = first;
-        while (temp.getNext() != null) {
-            System.out.println(temp.getValue());
-            temp = temp.getNext();
+        Node current = first;
+        while (current.next != null)
+
+        {
+            System.out.println(current.value);
+            current = current.next;
         }
-        System.out.println(temp.getValue());
+        System.out.println(current.value);
     }
 
     public boolean contains(int item) {
-        Node temp = first;
-        boolean present = false;
-        while (temp.getNext() != null) {
-
-            if (temp.getValue() == item) {
-                present = true;
-            }
-            temp = temp.getNext();
-        }
-        if (last.getValue() == item) {
-            present = true;
-        }
-        return present;
+        return indexOf(item) != -1;
 
     }
 
     public int indexOf(int item) {
-        int count = -1;
-        Node temp = first;
+        int index = 0;
+        Node current = first;
 
-        while (temp.getNext() != null) {
+        while (current != null) {
 
-            if (temp.getValue() == item) {
-                count++;
-                return count;
-            }
-            temp = temp.getNext();
-            count++;
+            if (current.value == item)
+                return index;
+            current = current.next;
+            index++;
         }
-        if (temp.getNext() == null && temp.getValue() == item) {
-            count++;
-            return count;
-        }
-
         return -1;
+    }
+
+    private boolean isEmpty() {
+        return first == null;
     }
 }
