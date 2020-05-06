@@ -16,12 +16,12 @@ public class LinkedList {
 
     private Node first;
     private Node last;
+    private int size;
 
-    // addFirst
     public void addFirst(int item) {
 
         Node firstnode = new Node(item);
-
+        size++;
         if (isEmpty()) {
             first = last = firstnode;
         } else {
@@ -31,9 +31,9 @@ public class LinkedList {
 
     }
 
-    // addLast
     public void addLast(int item) {
         Node lastnode = new Node(item);
+        size++;
         if (isEmpty()) {
             first = last = lastnode;
         } else {
@@ -42,23 +42,19 @@ public class LinkedList {
         }
     }
 
-    // deleteFirst
     public void deleteFirst() {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
         if (first == last) {
             first = last = null;
-            return;
+        } else {
+            Node secondnode = first.next;
+            first.next = null;
+            first = secondnode;
         }
-
-        Node secondnode = first.next;
-        first.next = null;
-        first = secondnode;
-
+        size--;
     }
-
-    // deleteLast
 
     public void deleteLast() {
         if (isEmpty()) {
@@ -66,16 +62,14 @@ public class LinkedList {
         }
         if (first == last) {
             first = last = null;
-            return;
+        } else {
+            Node previous = getPrevious(last);
+            last = previous;
+            last.next = null;
         }
-        Node previous = getPrevious(last);
-
-        last = previous;
-        last.next = null;
-
+        size--;
     }
 
-    // previousnode
     private Node getPrevious(Node node) {
         Node current = first;
         while (current != null) {
@@ -86,7 +80,6 @@ public class LinkedList {
         return null;
     }
 
-    // print
     public void print() {
         Node current = first;
         while (current.next != null)
@@ -120,4 +113,40 @@ public class LinkedList {
     private boolean isEmpty() {
         return first == null;
     }
+
+    public int getSize() {
+        return size;
+    }
+
+    public int[] toArray() {
+        Node current = first;
+        int[] array = new int[size];
+        int index = 0;
+        while (current != null) {
+            array[index++] = current.value;
+            current = current.next;
+        }
+        return array;
+    }
+
+    public void reverse() {
+        // [10 -> 30 -> 40]
+        // c n
+        if (isEmpty())
+            return;
+        Node prev, next, current;
+        current = first;
+        next = current.next;
+        while (next != null) {
+            prev = current;
+            current = next;
+            next = current.next;
+            current.next = prev;
+        }
+
+        last = first;
+        last.next = null;
+        first = current;
+    }
+
 }
