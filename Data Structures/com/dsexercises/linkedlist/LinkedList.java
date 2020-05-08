@@ -2,6 +2,8 @@ package com.dsexercises.linkedlist;
 
 import java.util.NoSuchElementException;
 
+import javax.lang.model.util.ElementScanner6;
+
 public class LinkedList {
 
     private class Node {
@@ -130,8 +132,7 @@ public class LinkedList {
     }
 
     public void reverse() {
-        // [10 -> 30 -> 40]
-        // c n
+
         if (isEmpty())
             return;
         Node prev, next, current;
@@ -149,4 +150,29 @@ public class LinkedList {
         first = current;
     }
 
+    public int getKthFromTheEnd(int k) {
+        if (isEmpty()) {
+            throw new IllegalStateException();
+        }
+        Node knode = first;
+        Node current = first;
+
+        for (int i = 1; i <= k - 1; i++) {
+            if (current.next == null) {
+                throw new IllegalArgumentException();
+            }
+            current = current.next;
+        }
+        while (current.next != null) {
+            current = current.next;
+            knode = knode.next;
+        }
+        return knode.value;
+
+    }
+
+    public void printMiddle() {
+        // [10 --> 20 --> 30--> 40 -->50]
+        // first last
+    }
 }
